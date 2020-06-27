@@ -12,13 +12,20 @@ datos_select <- datos %>%
   mutate(continente = countrycode(code, origin = "iso3c", destination = "continent")) %>% 
   filter(!is.na(continente))
 
+
 colores = c("#ffc50c", "#014a81", "#ec640f", "#be125f", "#393863")
 
-x11()
-ggplot(datos_select, aes(gdp_per_capita, life_satisfaction, colour = continente, label = entity)) + 
-  geom_point(aes(size = population), alpha = 0.8) +
-  scale_size(range = c(1, 20)) +
-  geom_text_repel(size = 1.2, colour = "gray70", segment.size = 0.2) +
+p1 <- ggplot(datos_select, 
+             aes(x = gdp_per_capita,
+                 y = life_satisfaction,
+                 colour = continente,
+                 label = entity)) + 
+  geom_point(aes(size = population),
+             alpha = 0.8) +
+  scale_size(range = c(1, 25)) +
+  geom_text_repel(size = 1.8,
+                  colour = "gray70",
+                  segment.size = 0.2) +
   scale_x_log10(labels = scales::dollar_format(prefix = "$")) +
   scale_color_manual(values = colores) +
   guides(size = FALSE) +
@@ -27,25 +34,9 @@ ggplot(datos_select, aes(gdp_per_capita, life_satisfaction, colour = continente,
        caption = "Fuente: Our World Data",
        x = "PIB per cápita (logaritmo)",
        y = "Satisfaccion ante la vida") +
-  theme_minimal(base_size = 6, base_family = "Roboto Condensed Light") +
-  theme(plot.background = element_rect(fill = "#1b1f2b", color = "#1b1f2b"),
-        plot.title = element_text(family = "Roboto Condensed", colour = "white",
-                                      size = 12,  margin = margin(t = 5, b= 3)),
-        plot.subtitle = element_text(colour = "white"),
-        plot.caption = element_text(colour = "white"),
-        panel.grid = element_line(colour = "gray20", size = 0.1),
-        axis.title = element_text(colour = "gray90", size = 5, hjust = 1),
-        axis.text = element_text(colour = "gray90"),
-        legend.title = element_blank(),
-        legend.text = element_text(colour = "white", face="bold"),
-        legend.position = "top",
-        legend.box = "horizontal")
+  theme_ybn_b(base_size = 8,
+              base_family = "Roboto Condensed Light") +
+  theme(legend.position = "top",
+        legend.title = element_blank())
 
-ggsave("dia_03/02_burbujas.png", height = 5, width = 7, units = "in", dpi = 300)
-
-
-
-
-
-
-
+ggsave("dia_03/02_burbujas3.png", height = 8.5, width = 11, units = "in", dpi = 300)
