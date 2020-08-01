@@ -7,19 +7,25 @@ peliculas <- peliculas %>%
   mutate(genero = str_split(genero, pattern = ", ")) %>% 
   unnest()
 
-p1 <- 
-  peliculas %>% 
-  ggplot() +
-  geom_density_ridges(aes(x = puntaje, y = genero, fill = genero), 
-                      scale = 3, rel_min_height = 0.01, alpha = 0.9, size = 0.3) +
+p1 <- ggplot(peliculas) +
+  geom_density_ridges(aes(x = puntaje, y = genero), 
+                      scale = 3,
+                      rel_min_height = 0.01,
+                      alpha = 0.9,
+                      size = 0.3,
+                      color = "#E35526",
+                      fill = "#E8724A") +
   labs(title = "¿Qué tipo de películas tienen en promedio mejores\ncalificaciones en IMDb?",
        caption = "Fuente: IMDb") +
-  scale_fill_cyclical(values = c("#006766", "#033f40")) +
-  theme_ybn(colour_background = "#f2efe6", 
-            base_colour = "#1e2831", 
-            grid_colour = "gray80", 
-            axis_text_colour = "gray10") +
-  theme(axis.text.y = element_text(size = 8, face = "bold"),
+  theme_ybn_w(base_family = "Roboto Condensed Light",
+              title_hjust = 0.5,
+              title_margin_b = 25) +
+  theme(axis.text.y = element_text(size = 11, face = "bold"),
         axis.title.y = element_blank())
 
-ggsave("dia_07/07_ridges.png", p1, height = 7, width = 5, units = "in", dpi = 300)
+ggsave(filename = "dia_07/07_ridges3.png",
+       plot = p1, 
+       type = "cairo",
+       height = 11,
+       width = 8.5,
+       units = "in")
